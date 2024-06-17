@@ -16,4 +16,10 @@ public class UserController {
     public ResponseEntity<String> hello(@RequestHeader("user-request") String userRequest) {
         return ResponseEntity.ok(userRequest);
     }
+
+    @GetMapping("/check")
+    public String check() {
+        return "user-service/check!";
+    }
+
 }
