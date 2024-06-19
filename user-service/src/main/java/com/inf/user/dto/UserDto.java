@@ -1,8 +1,10 @@
 package com.inf.user.dto;
 
+import com.inf.user.vo.ResponseOrder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserDto {
@@ -14,4 +16,6 @@ public class UserDto {
     private Date    createdAt;  // 가입 시간
 
     private String encryptedPwd;
+
+    private List<ResponseOrder> orders;
 }

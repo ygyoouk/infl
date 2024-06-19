@@ -25,7 +25,7 @@ public class WebSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/users/**").permitAll();
+                    auth.requestMatchers("/user-service/**").permitAll();
                     auth.requestMatchers("/h2-console/**").permitAll();
                 })
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
