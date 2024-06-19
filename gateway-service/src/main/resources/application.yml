@@ -31,11 +31,15 @@ spring:
           predicates:
             - Path=/user-service/**
           filters:
-#            - AddRequestHeader=user-request, user-request-header2
-#            - AddResponseHeader=user-response, user-response-header2
+            #            - AddRequestHeader=user-request, user-request-header2
+            #            - AddResponseHeader=user-response, user-response-header2
             - name: CustomFilter
             - name: LoggingFilter
               args:
                 baseMessage: Hi, is LoggingFilter
                 preLogger: true
                 postLogger: true
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**

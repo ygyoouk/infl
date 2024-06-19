@@ -1,0 +1,41 @@
+### USER 생성
+POST http://localhost:8000/user-service/users
+Content-Type: application/json
+
+{
+  "email": "user5@local.com",
+  "name": "유영국",
+  "pwd": "1234"
+}
+
+> {%
+    client.test("Validate", function() {
+        client.assert(response.status === 201, "Response status is not 201"); // 응답값이 200이면 통과
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'"); // 응답값이 application/json이면 통과
+    });
+    client.log(response.body.userId);
+    client.global.set("userId", response.body.userId);
+%}
+
+
+### ORDER 생성
+POST http://localhost:8000/order-service/{{userId}}/orders
+Content-Type: application/json
+
+{
+  "productId": "123",
+  "qty": 0,
+  "unitPrice": 0
+}
+
+<> 2024-06-19T143820.200.json
+<> 2024-06-19T143758.400.json
+
+
+### ORDER 조회
+GET http://localhost:8000/order-service/{{userId}}/orders
+
+
+
+### CATALOG 조회
+GET http://localhost:8000/catalog-service/catalogs
