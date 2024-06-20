@@ -34,7 +34,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             ServerHttpRequest request = exchange.getRequest();
 
             if(!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return onError(exchange, "no authorization header,");
+                return onError(exchange, "no authorization header", HttpStatus.UNAUTHORIZED);
             }
 
 
