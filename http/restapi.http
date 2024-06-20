@@ -17,6 +17,17 @@ Content-Type: application/json
     client.global.set("userId", response.body.userId);
 %}
 
+### LOGIN
+POST http://localhost:8000/user-service/login
+Content-Type: application/json
+
+{
+  "email": "user5@local.com",
+  "password": "1234"
+}
+
+### USERS 조회
+GET http://localhost:8000/user-service/users
 
 ### ORDER 생성
 POST http://localhost:8000/order-service/{{userId}}/orders

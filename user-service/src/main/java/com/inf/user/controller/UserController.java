@@ -4,7 +4,6 @@ package com.inf.user.controller;
 import com.inf.user.dto.UserDto;
 import com.inf.user.jpa.UserEntity;
 import com.inf.user.service.UserService;
-import com.inf.user.vo.Greeting;
 import com.inf.user.vo.RequestUser;
 import com.inf.user.vo.ResponseUser;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("/")
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
@@ -29,17 +28,9 @@ public class UserController {
 
     private final UserService userService;
 
-    private final Greeting greeting;
-
     @GetMapping("/health_check")
     public String status(){
         return "It's Working in User Service : " + environment.getProperty("local.server.port");
-    }
-
-    @GetMapping("/welcome")
-    public String welcome(){
-//        return environment.getProperty("greeting.message");
-        return greeting.getMessage();
     }
 
     @PostMapping("/users")
@@ -48,9 +39,9 @@ public class UserController {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
-        userService.createUser(userDto);
+        UserDto createdUserDto = userService.createUser(userDto);
 
-        ResponseUser responseUser = modelMapper.map(userDto, ResponseUser.class);
+        ResponseUser responseUser = modelMapper.map(createdUserDto, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }

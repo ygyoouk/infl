@@ -26,5 +26,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 
-greeting:
-  message: Welcome to the Simple E-commerce.
+token:
+  expiration_time: 86400000
+  secret: ffffeee89489498564hlotprojectsecretkey1564894651wersadfas

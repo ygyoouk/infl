@@ -26,20 +26,32 @@ spring:
           uri: lb://CATALOG-SERVICE
           predicates:
             - Path=/catalog-service/**
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/**
-          filters:
-            #            - AddRequestHeader=user-request, user-request-header2
-            #            - AddResponseHeader=user-response, user-response-header2
-            - name: CustomFilter
-            - name: LoggingFilter
-              args:
-                baseMessage: Hi, is LoggingFilter
-                preLogger: true
-                postLogger: true
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order-service/**
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+

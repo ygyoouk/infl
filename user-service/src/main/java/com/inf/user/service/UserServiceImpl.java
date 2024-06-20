@@ -5,15 +5,14 @@ import com.inf.user.jpa.UserEntity;
 import com.inf.user.jpa.UserRepository;
 import com.inf.user.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.math.raw.Mod;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MatchingStrategy;
-import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,17 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username);
+
+        if(userEntity == null) throw new UsernameNotFoundException(username);
+
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPwd()
+                , true, true, true, true
+                , new ArrayList<>());
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -61,4 +71,17 @@ public class UserServiceImpl implements UserService{
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if(userEntity == null) {
+            throw new UsernameNotFoundException("User Not Found : " + email);
+        }
+
+        return new ModelMapper().map(userEntity, UserDto.class);
+    }
+
+
 }
